@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>동행복지센터</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.98);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+            padding: 1rem 2rem;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #2c5aa0;
+        }
+
+        .menu-toggle {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            transition: all 0.3s;
+        }
+
+        .menu-toggle span {
+            width: 30px;
+            height: 3px;
+            background: #2c5aa0;
+            transition: all 0.3s;
+            border-radius: 2px;
+        }
+
+        .menu-toggle.active span:nth-child(1) {
+            transform: rotate(45deg) translate(8px, 8px);
+        }
+
+        .menu-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .menu-toggle.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -7px);
+        }
+
+        .nav-menu {
+            position: fixed;
+            top: 70px;
+            right: -100%;
+            width: 300px;
+            height: calc(100vh - 70px);
+            background: white;
+            box-shadow: -2px 0 10px rgba(0,0,0,0.1);
+            transition: right 0.3s ease;
+            overflow-y: auto;
+        }
+
+        .nav-menu.active {
+            right: 0;
+        }
+
+        .nav-menu ul {
+            list-style: none;
+            padding: 2rem 0;
+        }
+
+        .nav-menu li {
+            border-bottom: 1px solid #eee;
+        }
+
+        .nav-menu a {
+            display: block;
+            padding: 1.2rem 2rem;
+            color: #333;
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .nav-menu a:hover {
+            background: #f5f5f5;
+            color: #2c5aa0;
+            padding-left: 2.5rem;
+        }
+
+        .hero {
+            margin-top: 70px;
+            height: 60vh;
+            background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://i.imgur.com/syJhJdk.jpeg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(44, 90, 160, 0.2);
+            z-index: 0;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            color: white;
+            padding: 2rem;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        .content-section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        .section {
+            margin-bottom: 4rem;
+            padding: 2rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            animation: fadeIn 0.6s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section h2 {
+            color: #2c5aa0;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid #2c5aa0;
+            font-size: 2rem;
+        }
+
+        .section-content {
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        .info-box {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-left: 4px solid #2c5aa0;
+            margin: 1rem 0;
+            border-radius: 5px;
+        }
+
+        .info-box strong {
+            color: #2c5aa0;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .center-image {
+            width: 100%;
+            max-width: 800px;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            margin: 2rem auto;
+            display: block;
+        }
+
+        .toggle-button {
+            background: #2c5aa0;
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin: 1rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .toggle-button:hover {
+            background: #1e4070;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .toggle-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+        }
+
+        .toggle-content.active {
+            max-height: 1000px;
+        }
+
+        .toggle-icon {
+            transition: transform 0.3s;
+        }
+
+        .toggle-button.active .toggle-icon {
+            transform: rotate(180deg);
+        }
+
+        .image-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .image-gallery img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: transform 0.3s;
+        }
+
+        .image-gallery img:hover {
+            transform: scale(1.05);
+        }
+
+        .article-content {
+            background: #fff;
+            padding: 2rem;
+            border-radius: 10px;
+            line-height: 1.8;
+        }
+
+        .article-content h3 {
+            color: #2c5aa0;
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .article-content p {
+            margin-bottom: 1rem;
+        }
+
+        .external-link {
+            display: inline-block;
+            margin-top: 1rem;
+            padding: 0.5rem 1rem;
+            background: #2c5aa0;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+
+        .external-link:hover {
+            background: #1e4070;
+            transform: translateY(-2px);
+        }
+
+        footer {
+            background: #2c5aa0;
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 4rem;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .nav-menu {
+                width: 250px;
+            }
+
+            .section h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="logo">동행복지센터</div>
+            <button class="menu-toggle" id="menuToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <nav class="nav-menu" id="navMenu">
+        <ul>
+            <li><a href="#article">동행복지센터 기사</a></li>
+            <li><a href="#about">동행복지센터 보기</a></li>
+            <li><a href="#parking">주차시설</a></li>
+            <li><a href="#transportation">교통편</a></li>
+        </ul>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>동행복지센터</h1>
+            <p>함께하는 행복한 복지 공간</p>
+        </div>
+    </section>
+
+    <div class="content-section">
+        <section class="section" id="article">
+            <h2>동행복지센터 기사</h2>
+            <div class="article-content">
+                <h3>공주시, 동행복지센터 개소</h3>
+                <p>공주시는 주민 중심의 통합 복지 서비스를 제공하기 위해 동행복지센터를 새롭게 개소했습니다.</p>
+                
+                <p>동행복지센터는 지역 주민들이 필요로 하는 다양한 복지 서비스를 한 곳에서 제공받을 수 있도록 설계된 통합 복지 공간입니다.</p>
+                
+                <h3>주요 서비스</h3>
+                <p>센터에서는 복지 상담, 긴급 지원, 사례 관리 등 다양한 복지 서비스를 제공하며, 지역 주민들의 삶의 질 향상에 기여하고 있습니다.</p>
+                
+                <p>또한 취약계층을 위한 맞춤형 복지 프로그램을 운영하며, 주민들이 더 나은 삶을 살아갈 수 있도록 지원하고 있습니다.</p>
+                
+                <a href="http://www.ebaekje.co.kr/news/articleView.html?idxno=163926" target="_blank" class="external-link">원문 기사 보기 →</a>
+            </div>
+        </section>
+
+        <section class="section" id="about">
+            <h2>동행복지센터 소개</h2>
+            <div class="section-content">
+                <p>동행복지센터는 지역 주민들의 복지 향상과 삶의 질 개선을 위해 설립된 공공복지시설입니다.</p>
+                
+                <button class="toggle-button" id="officeToggle">
+                    <span>📷 사무실 사진 보기</span>
+                    <span class="toggle-icon">▼</span>
+                </button>
+                
+                <div class="toggle-content" id="officeImages">
+                    <div class="image-gallery">
+                        <img src="https://i.imgur.com/MdIjWkY.jpeg" alt="사무실 1">
+                        <img src="https://i.imgur.com/rSGbFmn.jpeg" alt="사무실 2">
+                        <img src="https://i.imgur.com/K9SUBgd.jpeg" alt="사무실 3">
+                        <img src="https://i.imgur.com/KiO0R7F.jpeg" alt="사무실 4">
+                    </div>
+                </div>
+                
+                <div class="info-box">
+                    <strong>📍 주소</strong>
+                    <p>충청남도 공주시 관골2길 23-4, 2층</p>
+                </div>
+
+                <div class="info-box">
+                    <strong>📞 연락처</strong>
+                    <p>전화: 041-881-1005</p>
+                </div>
+
+                <div class="info-box">
+                    <strong>🕐 운영시간</strong>
+                    <p>평일: 09:00 - 18:00</p>
+                    <p>점심시간: 12:00 - 13:00</p>
+                    <p>주말 및 공휴일: 휴무</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="parking">
+            <h2>주차시설 안내</h2>
+            <div class="section-content">
+                <button class="toggle-button" id="parkingToggle">
+                    <span>📷 주차장 사진 보기</span>
+                    <span class="toggle-icon">▼</span>
+                </button>
+                
+                <div class="toggle-content" id="parkingImages">
+                    <img src="https://i.imgur.com/Jojrjdd.jpeg" alt="주차장" class="center-image">
+                </div>
+
+                <div class="info-box">
+                    <strong>🚗 주차장 위치</strong>
+                    <p>센터 건물 전면 및 후면에 주차공간이 마련되어 있습니다.</p>
+                </div>
+
+                <div class="info-box">
+                    <strong>🅿️ 주차 안내</strong>
+                    <p>주변 인근에 주차가능</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="transportation">
+            <h2>교통편 안내</h2>
+            <div class="section-content">
+                <div class="info-box">
+                    <strong>🚌 버스 이용</strong>
+                    <p>간선버스: 101번, 102번, 103번</p>
+                    <p>지선버스: 201번, 202번</p>
+                    <p>정류장: 동행복지센터 앞 하차</p>
+                </div>
+
+                <div class="info-box">
+                    <strong>🚇 대중교통 이용</strong>
+                    <p>공주시청에서 도보 약 10분</p>
+                    <p>택시 이용 시 약 5분 소요</p>
+                </div>
+
+                <div class="info-box">
+                    <strong>🚗 자가용 이용</strong>
+                    <p>네비게이션 검색: "공주시 관골2길 23-4" 또는 "동행복지센터"</p>
+                    <p>공주시청에서 차량으로 약 5분 거리</p>
+                </div>
+
+                <div class="info-box">
+                    <strong>🚕 택시 이용</strong>
+                    <p>공주역에서 약 10분 소요</p>
+                    <p>예상 요금: 약 6,000원</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 동행복지센터. All rights reserved.</p>
+        <p>충청남도 공주시 관골2길 23-4, 2층 | 전화: 041-881-1005</p>
+    </footer>
+
+    <script>
+        const menuToggle = document.getElementById('menuToggle');
+        const navMenu = document.getElementById('navMenu');
+
+        menuToggle.addEventListener('click', () => {
+            menuToggle.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        });
+
+        // 메뉴 링크 클릭 시 메뉴 닫기
+        const menuLinks = document.querySelectorAll('.nav-menu a[href^="#"]');
+        menuLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                menuToggle.classList.remove('active');
+                navMenu.classList.remove('active');
+            });
+        });
+
+        // 메뉴 외부 클릭 시 닫기
+        document.addEventListener('click', (e) => {
+            if (!menuToggle.contains(e.target) && !navMenu.contains(e.target)) {
+                menuToggle.classList.remove('active');
+                navMenu.classList.remove('active');
+            }
+        });
+
+        // 부드러운 스크롤
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // 주차장 이미지 토글
+        const parkingToggle = document.getElementById('parkingToggle');
+        const parkingImages = document.getElementById('parkingImages');
+
+        parkingToggle.addEventListener('click', () => {
+            parkingToggle.classList.toggle('active');
+            parkingImages.classList.toggle('active');
+            
+            if (parkingImages.classList.contains('active')) {
+                parkingToggle.querySelector('span:first-child').textContent = '📷 주차장 사진 숨기기';
+            } else {
+                parkingToggle.querySelector('span:first-child').textContent = '📷 주차장 사진 보기';
+            }
+        });
+
+        // 사무실 이미지 토글
+        const officeToggle = document.getElementById('officeToggle');
+        const officeImages = document.getElementById('officeImages');
+
+        officeToggle.addEventListener('click', () => {
+            officeToggle.classList.toggle('active');
+            officeImages.classList.toggle('active');
+            
+            if (officeImages.classList.contains('active')) {
+                officeToggle.querySelector('span:first-child').textContent = '📷 사무실 사진 숨기기';
+            } else {
+                officeToggle.querySelector('span:first-child').textContent = '📷 사무실 사진 보기';
+            }
+        });
+    </script>
+</body>
+</html>
